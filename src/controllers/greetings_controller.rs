@@ -19,6 +19,17 @@ async fn index(db: DbClient) -> Result<HttpResponse> {
     render::<View, _, _>(args).await
 }
 
+#[get("/ab")]
+async fn ab(db: DbClient) -> Result<HttpResponse> {
+    let start = chrono::Utc::now();
+    let _dogs = Dog::all().run(db.as_ref()).await?;
+    let end = chrono::Utc::now();
+    let diff: chrono::Duration = end - start;
+    let micro = diff.num_microseconds().unwrap_or_default();
+    let _milli = micro as f64 / 1000.0;
+    Ok(HttpResponse::Ok().finish())
+}
+
 #[get("/reseed")]
 async fn reseed(db: DbClient) -> Result<HttpResponse> {
     seed(&db).await?;

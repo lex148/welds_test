@@ -15,10 +15,10 @@ use welds::connections::mssql::connect;
 const CS: &str =
     "server=127.0.0.1,11433;user id=sa;password=welds!123;TrustServerCertificate=true;";
 
-// use welds::connections::postgres::PostgresClient;
-// pub(crate) type DbClient = actix_web::web::Data<PostgresClient>;
-// use welds::connections::postgres::connect;
-// const CS: &str = "postgres://postgres:password@127.0.0.1:15432";
+//use welds::connections::postgres::PostgresClient;
+//pub(crate) type DbClient = actix_web::web::Data<PostgresClient>;
+//use welds::connections::postgres::connect;
+//const CS: &str = "postgres://postgres:password@127.0.0.1:15432";
 
 // use welds::connections::mysql::MysqlClient;
 // pub(crate) type DbClient = actix_web::web::Data<MysqlClient>;
@@ -70,6 +70,7 @@ async fn main() -> std::io::Result<()> {
             .service(assets_controller::styles)
             .service(greetings_controller::index)
             .service(greetings_controller::reseed)
+            .service(greetings_controller::ab)
     })
     .bind(bind_interface)?
     .run()
