@@ -1,0 +1,25 @@
+services:
+
+  #export DATABASE_URL="server=127.0.0.1,11433;user id=sa;password=welds!123;TrustServerCertificate=true;"
+  mssql:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      SA_PASSWORD: welds!123
+      ACCEPT_EULA: Y
+      MSSQL_PID: Express
+    ports:
+      - "127.0.0.1:11433:1433"
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: welds!123
+    ports:
+      - "127.0.0.1:13306:3306"
+
+  pg:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "15432:5432"

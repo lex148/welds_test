@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer base {
+  a {
+		color: var(--color-pink-600);
+  }
+  a:hover {
+		color: var(--color-pink-800);
+  }
+}
