@@ -1,0 +1,17 @@
+Completed 1000000 requests
+Completed 2000000 requests
+Completed 3000000 requests
+Completed 4000000 requests
+Completed 5000000 requests
+Completed 6000000 requests
+Completed 7000000 requests
+Completed 8000000 requests
+Completed 9000000 requests
+Completed 10000000 requests
+Finished 10000000 requests
+
+________________________________________________________
+Executed in  164.94 mins    fish           external
+   usr time   29.10 secs   43.11 millis   29.06 secs
+   sys time  147.92 secs    6.94 millis  147.91 secs
+

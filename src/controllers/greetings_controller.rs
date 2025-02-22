@@ -4,6 +4,7 @@ use crate::models::dog::Dog;
 use crate::DbClient;
 use actix_web::{get, HttpResponse};
 use gumbo_lib::view::render;
+use welds::prelude::*;
 
 #[get("/")]
 async fn index(db: DbClient) -> Result<HttpResponse> {
@@ -19,10 +20,24 @@ async fn index(db: DbClient) -> Result<HttpResponse> {
     render::<View, _, _>(args).await
 }
 
+// Test that use welds to call Tiberius
 #[get("/ab")]
 async fn ab(db: DbClient) -> Result<HttpResponse> {
     let start = chrono::Utc::now();
     let _dogs = Dog::all().run(db.as_ref()).await?;
+    let end = chrono::Utc::now();
+    let diff: chrono::Duration = end - start;
+    let micro = diff.num_microseconds().unwrap_or_default();
+    let _milli = micro as f64 / 1000.0;
+    Ok(HttpResponse::Ok().finish())
+}
+
+// Test that uses RAW Tiberius
+#[get("/ab2")]
+async fn ab2(db: DbClient) -> Result<HttpResponse> {
+    let start = chrono::Utc::now();
+    let sql = "SELECT id, name, owner_name, breed, pats, wags, scratches FROM dogs";
+    let _rows = db.fetch_rows(sql, &[]).await?;
     let end = chrono::Utc::now();
     let diff: chrono::Duration = end - start;
     let micro = diff.num_microseconds().unwrap_or_default();

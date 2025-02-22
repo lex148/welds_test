@@ -9,20 +9,12 @@ mod migrations;
 mod models;
 mod views;
 
-use welds::connections::mssql::MssqlClient;
-pub(crate) type DbClient = actix_web::web::Data<MssqlClient>;
-use welds::connections::mssql::connect;
+use welds::connections::any::AnyClient;
+pub(crate) type DbClient = actix_web::web::Data<AnyClient>;
+
 const CS: &str =
     "server=127.0.0.1,11433;user id=sa;password=welds!123;TrustServerCertificate=true;";
-
-//use welds::connections::postgres::PostgresClient;
-//pub(crate) type DbClient = actix_web::web::Data<PostgresClient>;
-//use welds::connections::postgres::connect;
-//const CS: &str = "postgres://postgres:password@127.0.0.1:15432";
-
-// use welds::connections::mysql::MysqlClient;
-// pub(crate) type DbClient = actix_web::web::Data<MysqlClient>;
-// use welds::connections::mysql::connect;
+// const CS: &str = "postgres://postgres:password@127.0.0.1:15432";
 // const CS: &str = "mysql://root:welds!123@127.0.0.1:13306/mysql";
 
 #[actix_web::main]
@@ -48,9 +40,10 @@ async fn main() -> std::io::Result<()> {
 
     // Connect pick the one you want to test
     let connection_string = env::var("DATABASE_URL").unwrap_or_else(|_| CS.to_owned());
-    let client = connect(&connection_string)
+    let client = welds::connections::connect(&connection_string)
         .await
         .expect("Unable to connect to Database");
+
     migrations::up(&client).await.unwrap();
 
     let client = Data::new(client);
@@ -71,6 +64,7 @@ async fn main() -> std::io::Result<()> {
             .service(greetings_controller::index)
             .service(greetings_controller::reseed)
             .service(greetings_controller::ab)
+            .service(greetings_controller::ab2)
     })
     .bind(bind_interface)?
     .run()
